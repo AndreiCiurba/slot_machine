@@ -3,6 +3,11 @@ const SLOTS_PER_REEL = 12;
 // current settings give a value of 149, rounded to 150
 const REEL_RADIUS = 150;
 
+
+
+
+
+
 function createSlots (ring) {
 
 	var slotAngle = 360 / SLOTS_PER_REEL;
@@ -60,14 +65,13 @@ function spin(timer) {
 			.css('animation','back-spin 1s, spin-' + seed + ' ' + (timer + i*0.5) + 's')
 			.attr('class','ring spin-' + seed);
 	}
-
 	console.log('=====');
 }
 
 
 
 $(document).ready(function() {
-
+	let count = 0;
 	// initiate slots
  	createSlots($('#ring1'));
  	createSlots($('#ring2'));
@@ -78,8 +82,17 @@ $(document).ready(function() {
 
  	// hook start button
  	$('.go').on('click',function(){
+		if (count === 5){
+			alert("game finished");
+		}
+
+
  		var timer = 2;
  		spin(timer);
+		$('#credit').text(function () {
+			return String(count);
+		});
+		count = count + 1;
  	})
 
  	// hook xray checkbox
