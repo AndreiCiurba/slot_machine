@@ -22,7 +22,11 @@ function createSlots (ring) {
 		// setup the number to show inside the slots
 		// the position is randomized to
 
-		var content = $(slot).append('<p>' + ((seed + i)%12)+ '</p>');
+		val = ((seed + i)%12);
+		source = "./img/image" + String(val) + ".png";
+		// <img src="img_girl.jpg" >
+
+		var content = $(slot).append('<img src="' + source + '" class = "images">');
 
 		// add the poster to the row
 		ring.append(slot);
