@@ -3,7 +3,7 @@ const SLOTS_PER_REEL = 12;
 // current settings give a value of 149, rounded to 150
 const REEL_RADIUS = 150;
 
-
+const timer = 1;
 
 
 
@@ -43,7 +43,7 @@ function getSeed() {
 	return Math.floor(Math.random()*(SLOTS_PER_REEL));
 }
 
-function spin(timer) {
+const spin = async () => {
 	//var txt = 'seeds: ';
 	for(var i = 1; i < 7; i ++) {
 		var oldSeed = -1;
@@ -72,6 +72,16 @@ function spin(timer) {
 
 $(document).ready(function() {
 	let count = 0;
+	let totalValue = 0
+	let income_matrix =[0, 2, 0, 1, 0, 2, 2, 0, 1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 0, 1, 0, 0, 0];
+		// [2, 0, 1, 0, 0, 2, 0, 1, 0, 0, 2, 0, 1, 0, 0, 2, 0, 1, 0, 0],
+		// [1, 0, 1, 0, 0, 2, 0, 1, 0, 0, 2, 0, 1, 0, 0, 2, 0, 1, 0, 0],
+		// [2, 0, 1, 0, 0, 2, 0, 1, 0, 0, 2, 0, 1, 0, 0, 2, 0, 1, 0, 0],
+		// [2, 0, 1, 0, 0, 2, 0, 1, 0, 0, 2, 0, 1, 0, 0, 2, 0, 1, 0, 0],
+		// [2, 0, 1, 0, 0, 2, 0, 1, 0, 0, 2, 0, 1, 0, 0, 2, 0, 1, 0, 0],
+		// [2, 0, 1, 0, 0, 2, 0, 1, 0, 0, 2, 0, 1, 0, 0, 2, 0, 1, 0, 0],
+		// [2, 0, 1, 0, 0, 2, 0, 1, 0, 0, 2, 0, 1, 0, 0, 2, 0, 1, 0, 0]
+	// ]
 	// initiate slots
  	createSlots($('#ring1'));
  	createSlots($('#ring2'));
@@ -80,18 +90,23 @@ $(document).ready(function() {
  	createSlots($('#ring5'));
 	createSlots($('#ring6'));
 
- 	// hook start button
+const button = document.querySelector('.go')
  	$('.go').on('click',function(){
-		if (count === 5){
-			alert("game finished");
+		button.disabled = true;
+		if (count === 20){
+			alert("You won 15 euro");
 		}
+ 		spin().then(()=>{
+			$('#credit').text(function () {
+				console.log(count)
+				totalValue = income_matrix[count] + totalValue;
+				return "Total income " + String(totalValue);
+			});
+	});
+		setTimeout(function(){
+			button.disabled = false;
+		}, 4000)
 
-
- 		var timer = 2;
- 		spin(timer);
-		$('#credit').text(function () {
-			return String(count);
-		});
 		count = count + 1;
  	})
 
