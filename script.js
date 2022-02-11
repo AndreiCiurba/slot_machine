@@ -22,7 +22,7 @@ function createSlots (ring) {
 		// setup the number to show inside the slots
 		// the position is randomized to
 
-		val = ((seed + i)%12);
+		val = ((seed + i)%12) + 1;
 		source = "./img/image" + String(val) + ".png";
 		// <img src="img_girl.jpg" >
 
@@ -40,14 +40,14 @@ function getSeed() {
 
 function spin(timer) {
 	//var txt = 'seeds: ';
-	for(var i = 1; i < 6; i ++) {
+	for(var i = 1; i < 7; i ++) {
 		var oldSeed = -1;
 		/*
 		checking that the old seed from the previous iteration is not the same as the current iteration;
 		if this happens then the reel will not spin at all
 		*/
 		var oldClass = $('#ring'+i).attr('class');
-		if(oldClass.length > 4) {
+		if(oldClass.length > 5) {
 			oldSeed = parseInt(oldClass.slice(10));
 			console.log(oldSeed);
 		}
@@ -74,6 +74,7 @@ $(document).ready(function() {
  	createSlots($('#ring3'));
  	createSlots($('#ring4'));
  	createSlots($('#ring5'));
+	createSlots($('#ring6'));
 
  	// hook start button
  	$('.go').on('click',function(){

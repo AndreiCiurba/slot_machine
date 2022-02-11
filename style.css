@@ -9,20 +9,10 @@ body {
   padding: 0 0 40px;
 }
 
-.perspective-on {
-  -webkit-perspective: 1000px;
-     -moz-perspective: 1000px;
-          perspective: 1000px;    /* Setting the perspective of the contents of the stage but not the stage itself*/
-}
-.perspective-off {
-  -webkit-perspective: 0;
-     -moz-perspective: 0;
-          perspective: 0;
-}
 
 #rotate {
   margin: 0 auto 0;
-  width: 450px;
+  width: 540px;
   height: 220px;
   padding-top: 200px;
   /* Ensure that we're in 3D space */
@@ -69,7 +59,6 @@ body {
   width:90px;
   height:80px;
 }
-
 
 
 
