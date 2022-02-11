@@ -100,7 +100,6 @@ const button = document.querySelector('.go')
 		}
  		spin().then(()=>{
 			$('#credit').text(function () {
-				console.log(count)
 				totalValue = income_matrix[randomNr][count] + totalValue;
 				return "Total income " + String(totalValue);
 			});
@@ -113,28 +112,28 @@ const button = document.querySelector('.go')
  	})
 
  	// hook xray checkbox
- 	$('#xray').on('click',function(){
- 		//var isChecked = $('#xray:checked');
- 		var tilt = 'tiltout';
-
-    if($(this).is(':checked')) {
- 			tilt = 'tiltin';
- 			$('.slot').addClass('backface-on');
- 			$('#rotate').css('animation',tilt + ' 2s 1');
-
-			setTimeout(function(){
-			  $('#rotate').toggleClass('tilted');
-			},2000);
- 		} else {
-      tilt = 'tiltout';
- 			$('#rotate').css({'animation':tilt + ' 2s 1'});
-
-			setTimeout(function(){
-	 			$('#rotate').toggleClass('tilted');
-	 			$('.slot').removeClass('backface-on');
-	 		},1900);
- 		}
- 	})
+	 	// $('#xray').on('click',function(){
+	 	// 	//var isChecked = $('#xray:checked');
+	 	// 	var tilt = 'tiltout';
+		//
+	  //   if($(this).is(':checked')) {
+	 	// 		tilt = 'tiltin';
+	 	// 		$('.slot').addClass('backface-on');
+	 	// 		$('#rotate').css('animation',tilt + ' 2s 1');
+		//
+		// 		setTimeout(function(){
+		// 		  $('#rotate').toggleClass('tilted');
+		// 		},2000);
+	 	// 	} else {
+	  //     tilt = 'tiltout';
+	 	// 		$('#rotate').css({'animation':tilt + ' 2s 1'});
+		//
+		// 		setTimeout(function(){
+		//  			$('#rotate').toggleClass('tilted');
+		//  			$('.slot').removeClass('backface-on');
+		//  		},1900);
+	 	// 	}
+	 	// })
 
  	// hook perspective
  	$('#perspective').on('click',function(){
