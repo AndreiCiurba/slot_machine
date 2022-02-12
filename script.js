@@ -5,8 +5,7 @@ const REEL_RADIUS = 150;
 
 const timer = 1;
 
-
-
+const matches = [10,8,7,12,11,9,3,2,6,1,5,4];
 
 function createSlots (ring) {
 
@@ -24,10 +23,10 @@ function createSlots (ring) {
 
 		slot.style.transform = transform;
 
-		// setup the number to show inside the slots
-		// the position is randomized to
+		// val = ((seed + i)%12) + 1; before
 
-		val = ((seed + i)%12) + 1;
+		val = ((i)%12) + 1;
+		spin(0);
 		source = "./img/image" + String(val) + ".png";
 		// <img src="img_girl.jpg" >
 
@@ -38,51 +37,64 @@ function createSlots (ring) {
 	}
 }
 
-function getSeed(val, previous) {
+function getSeed(val=0, previous=0) {
 	// generate random number smaller than 13 then floor it to settle between 0 and 12 inclusive
-	switch (val) {
-  case 0:
     return Math.floor(Math.random()*(SLOTS_PER_REEL));
-    break;
-  case 1:
-		return (previous + 1)%12;
-  case 2:
-		return previous;
-    break;
-  default:
-		return Math.floor(Math.random()*(SLOTS_PER_REEL));
-    break;
-	}
-
 
 }
 
+function getValue(value, randomNr, nr, i) {
+	switch (value) {
+		case 1:
+			if (i === 2 || i === 3 || i===4){
+				nr = randomNr;
+			}
+			break;
+		case 2:
+			if (i%2 === 0) {
+				nr = randomNr
+			} else {
+				nr = matches[randomNr-1]
+			}
+			break;
+		case 3:
+			nr = randomNr;
+			break;
+		default:
+			break;
+		}
+		return nr;
+}
+
 function spin(value){
-	//var txt = 'seeds: ';
 	console.log(value);
+	let randomNr = Math.floor(Math.random() * 12);
 	for(var i = 1; i < 7; i ++) {
 		var oldSeed = -1;
-		var oldClass = $('#ring'+i).attr('class');
+		var oldClass = $('#ring' + i).attr('class');
 		if(oldClass.length > 5) {
 			oldSeed = parseInt(oldClass.slice(10));
 		}
-		switch (value) {
-	  case 0:
-	    break;
-	  default:
-			oldSeed = Math.floor(Math.random()*(SLOTS_PER_REEL));
+		var seed = getSeed();
+		while(oldSeed === seed) {
+			seed = getSeed();
 		}
-
-
-
-		var seed = getSeed(value, oldSeed);
-		while(oldSeed == seed) {
-			seed = getSeed(value, oldSeed);
+		// let nr = seed;
+		nr = getValue(value, randomNr, seed, i);
+		if (nr === oldSeed) {
+			if (oldSeed + 1 === 13)
+		 	{
+				nr = 1;
+			} else {
+				nr = oldSeed + 1;
+			}
 		}
 
 		$('#ring'+i)
-			.css('animation','back-spin 1s, spin-' + seed + ' ' + (timer + i*0.5) + 's')
-			.attr('class','ring spin-' + seed);
+			.css('animation','back-spin 1s, spin-' +  nr  + ' ' + (timer + i*0.2) + 's')
+			.attr('class','ring spin-' + nr);
+
+
 	}
 }
 
@@ -92,7 +104,7 @@ $(document).ready(function() {
 	let count = 0;
 	let totalValue = 0
 	let income_matrix =[
-	[0, 2, 0, 1, 0, 2, 2, 0, 1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 0, 1, 0, 0, 0],
+	[0, 1, 2, 3, 1, 2, 2, 0, 1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 0, 1, 0, 0, 0],
 	[0, 2, 0, 1, 0, 2, 2, 0, 1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 0, 1, 0, 0, 0],
 	[2, 0, 0, 1, 0, 1, 0, 0, 0, 0, 2, 0, 1, 0, 2, 2, 0, 1, 0, 0, 1, 0, 1, 0],
 	[0, 2, 0, 1, 0, 2, 2, 0, 1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 0, 1, 0, 0, 0],
@@ -116,15 +128,17 @@ const button = document.querySelector('.go')
 		if (count === 20){
 			alert("You won 15 euro");
 		}
- 		spin(income_matrix[randomNr][count]);
+		// spin(income_matrix[randomNr][count]);
+ 		spin(income_matrix[0][count]);
 			$('#credit').text(function () {
-				totalValue = income_matrix[randomNr][count] + totalValue;
-				return "Total income " + String(totalValue);
+				// totalValue = income_matrix[randomNr][count] + totalValue;
+				totalValue = income_matrix[0][count] + totalValue;
+				return "Total income: " + String(totalValue);
 			});
 
 		setTimeout(function(){
 			button.disabled = false;
-		}, 4000)
+		}, 2000)
 
 		count = count + 1;
  	})
