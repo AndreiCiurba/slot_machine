@@ -38,9 +38,23 @@ function createSlots (ring) {
 	}
 }
 
-function getSeed() {
+function getSeed(val, previous) {
 	// generate random number smaller than 13 then floor it to settle between 0 and 12 inclusive
-	return Math.floor(Math.random()*(SLOTS_PER_REEL));
+	switch (val) {
+  case 0:
+    return Math.floor(Math.random()*(SLOTS_PER_REEL));
+    break;
+  case 1:
+		return (previous + 1)%12;
+  case 2:
+		return previous;
+    break;
+  default:
+		return Math.floor(Math.random()*(SLOTS_PER_REEL));
+    break;
+	}
+
+
 }
 
 function spin(value){
@@ -48,17 +62,22 @@ function spin(value){
 	console.log(value);
 	for(var i = 1; i < 7; i ++) {
 		var oldSeed = -1;
-		/*
-		checking that the old seed from the previous iteration is not the same as the current iteration;
-		if this happens then the reel will not spin at all
-		*/
 		var oldClass = $('#ring'+i).attr('class');
 		if(oldClass.length > 5) {
 			oldSeed = parseInt(oldClass.slice(10));
 		}
-		var seed = getSeed();
+		switch (value) {
+	  case 0:
+	    break;
+	  default:
+			oldSeed = Math.floor(Math.random()*(SLOTS_PER_REEL));
+		}
+
+
+
+		var seed = getSeed(value, oldSeed);
 		while(oldSeed == seed) {
-			seed = getSeed();
+			seed = getSeed(value, oldSeed);
 		}
 
 		$('#ring'+i)
