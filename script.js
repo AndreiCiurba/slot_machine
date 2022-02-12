@@ -43,8 +43,9 @@ function getSeed() {
 	return Math.floor(Math.random()*(SLOTS_PER_REEL));
 }
 
-const spin = async () => {
+function spin(value){
 	//var txt = 'seeds: ';
+	console.log(value);
 	for(var i = 1; i < 7; i ++) {
 		var oldSeed = -1;
 		/*
@@ -54,7 +55,6 @@ const spin = async () => {
 		var oldClass = $('#ring'+i).attr('class');
 		if(oldClass.length > 5) {
 			oldSeed = parseInt(oldClass.slice(10));
-			console.log(oldSeed);
 		}
 		var seed = getSeed();
 		while(oldSeed == seed) {
@@ -65,7 +65,6 @@ const spin = async () => {
 			.css('animation','back-spin 1s, spin-' + seed + ' ' + (timer + i*0.5) + 's')
 			.attr('class','ring spin-' + seed);
 	}
-	console.log('=====');
 }
 
 
@@ -98,45 +97,16 @@ const button = document.querySelector('.go')
 		if (count === 20){
 			alert("You won 15 euro");
 		}
- 		spin().then(()=>{
+ 		spin(income_matrix[randomNr][count]);
 			$('#credit').text(function () {
 				totalValue = income_matrix[randomNr][count] + totalValue;
 				return "Total income " + String(totalValue);
 			});
-	});
+
 		setTimeout(function(){
 			button.disabled = false;
 		}, 4000)
 
 		count = count + 1;
- 	})
-
- 	// hook xray checkbox
-	 	// $('#xray').on('click',function(){
-	 	// 	//var isChecked = $('#xray:checked');
-	 	// 	var tilt = 'tiltout';
-		//
-	  //   if($(this).is(':checked')) {
-	 	// 		tilt = 'tiltin';
-	 	// 		$('.slot').addClass('backface-on');
-	 	// 		$('#rotate').css('animation',tilt + ' 2s 1');
-		//
-		// 		setTimeout(function(){
-		// 		  $('#rotate').toggleClass('tilted');
-		// 		},2000);
-	 	// 	} else {
-	  //     tilt = 'tiltout';
-	 	// 		$('#rotate').css({'animation':tilt + ' 2s 1'});
-		//
-		// 		setTimeout(function(){
-		//  			$('#rotate').toggleClass('tilted');
-		//  			$('.slot').removeClass('backface-on');
-		//  		},1900);
-	 	// 	}
-	 	// })
-
- 	// hook perspective
- 	$('#perspective').on('click',function(){
- 		$('#stage').toggleClass('perspective-on perspective-off');
  	})
  });
