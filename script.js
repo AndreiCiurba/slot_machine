@@ -3,7 +3,7 @@ const SLOTS_PER_REEL = 12;
 // current settings give a value of 149, rounded to 150
 const REEL_RADIUS = 150;
 
-const timer = 1;
+const timer = 4;
 
 const matches = [10,8,7,12,11,9,3,2,6,1,5,4];
 
@@ -138,7 +138,7 @@ const button = document.querySelector('.go')
 
 		setTimeout(function(){
 			button.disabled = false;
-		}, 2000)
+		}, 5000)
 
 		count = count + 1;
  	})
