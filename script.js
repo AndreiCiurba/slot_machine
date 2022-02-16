@@ -66,7 +66,7 @@ function getValue(value, randomNr, nr, i) {
 		return nr;
 }
 
-function spin(value){
+async function spin(value){
 	console.log(value);
 	let randomNr = Math.floor(Math.random() * 12);
 	for(var i = 1; i < 7; i ++) {
@@ -95,16 +95,25 @@ function spin(value){
 			.attr('class','ring spin-' + nr);
 
 
+
 	}
+	return true;
+}
+
+//https://stackoverflow.com/questions/1836105/how-to-wait-5-seconds-with-jquery
+$.wait = function( callback, seconds){
+   return window.setTimeout( callback, seconds * 1000 );
 }
 
 
 
 $(document).ready(function() {
 	let count = 0;
-	let totalValue = 0
+	let totalValue = 0;
+
+
 	let income_matrix =[
-	[0, 1, 2, 3, 1, 2, 2, 0, 1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 0, 1, 0, 0, 0],
+	[0, 6, 6, 3, 1, 2, 2, 0, 1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 0, 1, 0, 0, 0],
 	[0, 2, 0, 1, 0, 2, 2, 0, 1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 0, 1, 0, 0, 0],
 	[2, 0, 0, 1, 0, 1, 0, 0, 0, 0, 2, 0, 1, 0, 2, 2, 0, 1, 0, 0, 1, 0, 1, 0],
 	[0, 2, 0, 1, 0, 2, 2, 0, 1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 0, 1, 0, 0, 0],
@@ -129,16 +138,17 @@ const button = document.querySelector('.go')
 			alert("You won 15 euro");
 		}
 		// spin(income_matrix[randomNr][count]);
- 		spin(income_matrix[0][count]);
-			$('#credit').text(function () {
-				// totalValue = income_matrix[randomNr][count] + totalValue;
-				totalValue = income_matrix[0][count] + totalValue;
-				return "Total income: " + String(totalValue);
-			});
-
 		setTimeout(function(){
 			button.disabled = false;
 		}, 5000)
+		spin(income_matrix[0][count]);
+		$.wait(function() {$('#credit').text(function () {
+			// totalValue = income_matrix[randomNr][count] + totalValue;
+			totalValue = income_matrix[0][count] + totalValue;
+			return "Total income: " + String(totalValue);
+		});
+	}, 5);
+
 
 		count = count + 1;
  	})
